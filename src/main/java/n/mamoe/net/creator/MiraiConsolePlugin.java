@@ -5,7 +5,6 @@ import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.ModuleTypeManager;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.util.Icons;
 import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NotNull;
 
