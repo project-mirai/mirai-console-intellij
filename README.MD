@@ -16,6 +16,7 @@ Mirai 是一个在全平台下运行，提供 QQ Android 和 TIM PC 协议支持
      <p><a href = "https://www.crypton.co.jp/">CRYPTON</a>以<a href = "https://www.crypton.co.jp/miku_eng">初音未来</a>为代表的创作与活动<a href = "https://magicalmirai.com/2019/index_en.html">(Magical <b>Mirai</b>)</a></p>
 图标以及形象由画师<a href = "">DazeCake</a>绘制
 </div>
+
 # mirai-console-intellij
 IDEA插件, 支持快速生成启动mirai plugins项目<br>
 on going
