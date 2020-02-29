@@ -1,0 +1,23 @@
+<idea-plugin>
+    <id>org.example.testPlugin2</id>
+    <name>Mirai Console</name>
+    <vendor email="support@mamoe.net" url="http://www.mamoe.net">Mamoe Tech.</vendor>
+
+    <description>Allows you to create a miral console plugin easily</description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <moduleType id="MIRAI_CONSOLE_PLUGIN" implementationClass="n.mamoe.net.creator.MiraiConsolePlugin"/>
+        <moduleBuilder builderClass="n.mamoe.net.creator.MiraiPluginModuleBuilder"
+                       id="MIRAI_CONSOLE_PLUGIN_STEP"
+                       order="first"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
