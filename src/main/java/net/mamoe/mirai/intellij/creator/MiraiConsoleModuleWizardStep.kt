@@ -47,17 +47,17 @@ class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
     }
 
     override fun onStepLeaving() {
-        CreateConfig.author = authorsField!!.text
-        CreateConfig.depends = dependField!!.text.replace("，", ",").split(",").map(String::trim)
-        CreateConfig.info = descriptionField!!.text
-        if (!websiteField!!.text.isBlank()) {
+        CreateConfig.author = authorsField.text
+        CreateConfig.depends = dependField.text.replace("，", ",").split(",").map(String::trim)
+        CreateConfig.info = descriptionField.text
+        if (!websiteField.text.isBlank()) {
             CreateConfig.info += " Web: " + websiteField.text
         }
-        CreateConfig.mainClassPath = mainClassField!!.text
-        CreateConfig.version = pluginVersionField!!.text
+        CreateConfig.mainClassPath = mainClassField.text
+        CreateConfig.version = pluginVersionField.text
         if (!CreateConfig.version!!.toLowerCase().startsWith("v")) {
             CreateConfig.version = "V" + CreateConfig.version
         }
-        CreateConfig.pluginName = pluginNameField!!.text
+        CreateConfig.pluginName = pluginNameField.text
     }
 }
