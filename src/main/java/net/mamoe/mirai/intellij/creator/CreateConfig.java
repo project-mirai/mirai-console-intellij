@@ -1,4 +1,4 @@
-package n.mamoe.net.creator;
+package net.mamoe.mirai.intellij.creator;
 
 import java.util.List;
 

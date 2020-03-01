@@ -1,10 +1,9 @@
-package n.mamoe.net.creator;
+package net.mamoe.mirai.intellij.creator;
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.openapi.options.ConfigurationException;
 
 import javax.swing.*;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
