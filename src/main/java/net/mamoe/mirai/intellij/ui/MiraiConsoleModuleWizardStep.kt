@@ -1,11 +1,9 @@
-package net.mamoe.mirai.intellij.creator
+package net.mamoe.mirai.intellij.ui
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.openapi.options.ConfigurationException
-import javax.swing.JComponent
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JTextField
+import net.mamoe.mirai.intellij.CreateConfig
+import javax.swing.*
 
 class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
     private lateinit var pluginNameField: JTextField
@@ -23,7 +21,21 @@ class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
         return panel!!
     }
 
-    override fun updateDataModel() {}
+    override fun updateDataModel() {
+        CreateConfig.author = authorsField.text
+        CreateConfig.depends = dependField.text.replace("，", ",").split(",").map(String::trim)
+        CreateConfig.info = descriptionField.text
+        if (!websiteField.text.isBlank()) {
+            CreateConfig.info += " Web: " + websiteField.text
+        }
+        CreateConfig.mainClassPath = mainClassField.text
+        CreateConfig.version = pluginVersionField.text
+        if (!CreateConfig.version!!.toLowerCase().startsWith("v")) {
+            CreateConfig.version = "V" + CreateConfig.version
+        }
+        CreateConfig.pluginName = pluginNameField.text
+        println("I received")
+    }
 
     @Throws(ConfigurationException::class)
     override fun validate(): Boolean {
@@ -42,22 +54,8 @@ class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
         return true
     }
 
-    override fun _init() {
-        super._init()
-    }
 
     override fun onStepLeaving() {
-        CreateConfig.author = authorsField.text
-        CreateConfig.depends = dependField.text.replace("，", ",").split(",").map(String::trim)
-        CreateConfig.info = descriptionField.text
-        if (!websiteField.text.isBlank()) {
-            CreateConfig.info += " Web: " + websiteField.text
-        }
-        CreateConfig.mainClassPath = mainClassField.text
-        CreateConfig.version = pluginVersionField.text
-        if (!CreateConfig.version!!.toLowerCase().startsWith("v")) {
-            CreateConfig.version = "V" + CreateConfig.version
-        }
-        CreateConfig.pluginName = pluginNameField.text
+
     }
 }

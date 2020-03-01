@@ -1,4 +1,4 @@
-package net.mamoe.mirai.intellij.creator.module
+package net.mamoe.mirai.intellij.module
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
@@ -6,7 +6,7 @@ import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.module.ModuleTypeManager
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.util.PlatformIcons
-import net.mamoe.mirai.intellij.creator.MiraiPluginModuleBuilder
+import net.mamoe.mirai.intellij.builder.MiraiPluginModuleBuilder
 import javax.swing.Icon
 
 class MiraiConsolePluginModule : ModuleType<MiraiPluginModuleBuilder>(ID) {

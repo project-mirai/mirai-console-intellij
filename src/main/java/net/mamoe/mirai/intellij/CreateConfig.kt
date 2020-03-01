@@ -1,4 +1,4 @@
-package net.mamoe.mirai.intellij.creator
+package net.mamoe.mirai.intellij
 
 object CreateConfig {
     @JvmField
@@ -13,4 +13,7 @@ object CreateConfig {
     var depends: List<String>? = null
     @JvmField
     var version: String? = null
+    @JvmField
+    var isKotlinProject: Boolean? = null
+
 }
