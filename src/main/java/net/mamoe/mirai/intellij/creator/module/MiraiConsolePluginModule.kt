@@ -1,4 +1,4 @@
-package net.mamoe.mirai.intellij.creator
+package net.mamoe.mirai.intellij.creator.module
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.ide.util.projectWizard.WizardContext
@@ -6,9 +6,10 @@ import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.module.ModuleTypeManager
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.util.PlatformIcons
+import net.mamoe.mirai.intellij.creator.MiraiPluginModuleBuilder
 import javax.swing.Icon
 
-class MiraiConsolePlugin : ModuleType<MiraiPluginModuleBuilder>(ID) {
+class MiraiConsolePluginModule : ModuleType<MiraiPluginModuleBuilder>(ID) {
     override fun createModuleBuilder(): MiraiPluginModuleBuilder {
         return MiraiPluginModuleBuilder()
     }
@@ -33,8 +34,9 @@ class MiraiConsolePlugin : ModuleType<MiraiPluginModuleBuilder>(ID) {
 
     companion object {
         private const val ID = "MIRAI_CONSOLE_PLUGIN"
+
         @JvmStatic
-        val instance: MiraiConsolePlugin
-            get() = ModuleTypeManager.getInstance().findByID(ID) as MiraiConsolePlugin
+        val instance: MiraiConsolePluginModule
+            get() = ModuleTypeManager.getInstance().findByID(ID) as MiraiConsolePluginModule
     }
 }

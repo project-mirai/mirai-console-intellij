@@ -7,7 +7,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.roots.ModifiableRootModel
-import net.mamoe.mirai.intellij.creator.MiraiConsolePlugin.Companion.instance
+import net.mamoe.mirai.intellij.creator.module.MiraiConsolePluginModule.Companion.instance
 
 class MiraiPluginModuleBuilder : ModuleBuilder() {
     @Throws(ConfigurationException::class)

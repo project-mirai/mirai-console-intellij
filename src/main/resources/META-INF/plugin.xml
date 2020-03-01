@@ -12,7 +12,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <moduleType id="MIRAI_CONSOLE_PLUGIN"
-                    implementationClass="net.mamoe.mirai.intellij.creator.MiraiConsolePlugin"/>
+                    implementationClass="net.mamoe.mirai.intellij.creator.module.MiraiConsolePluginModule"/>
         <moduleBuilder builderClass="net.mamoe.mirai.intellij.creator.MiraiPluginModuleBuilder"
                        id="MIRAI_CONSOLE_PLUGIN_STEP"
                        order="first"/>
