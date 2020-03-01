@@ -14,17 +14,9 @@ class MiraiConsolePluginModule : ModuleType<MiraiPluginModuleBuilder>(ID) {
         return MiraiPluginModuleBuilder()
     }
 
-    override fun getName(): String {
-        return "Mirai Console Plugin"
-    }
-
-    override fun getDescription(): String {
-        return "Create a mirai console plugin"
-    }
-
-    override fun getNodeIcon(b: Boolean): Icon {
-        return PlatformIcons.ABSTRACT_METHOD_ICON
-    }
+    override fun getName(): String = "Mirai Console Plugin"
+    override fun getDescription(): String = "Create a mirai console plugin"
+    override fun getNodeIcon(b: Boolean): Icon = PlatformIcons.ABSTRACT_METHOD_ICON
 
     override fun createWizardSteps(wizardContext: WizardContext,
                                    moduleBuilder: MiraiPluginModuleBuilder,
