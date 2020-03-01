@@ -1,58 +1,40 @@
-package net.mamoe.mirai.intellij.creator;
+package net.mamoe.mirai.intellij.creator
 
-import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.ide.util.projectWizard.WizardContext;
-import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.module.ModuleTypeManager;
-import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.util.PlatformIcons;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep
+import com.intellij.ide.util.projectWizard.WizardContext
+import com.intellij.openapi.module.ModuleType
+import com.intellij.openapi.module.ModuleTypeManager
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider
+import com.intellij.util.PlatformIcons
+import javax.swing.Icon
 
-import javax.swing.*;
-
-public class MiraiConsolePlugin extends ModuleType<MiraiPluginModuleBuilder> {
-    private static final String ID = "MIRAI_CONSOLE_PLUGIN";
-
-    public MiraiConsolePlugin() {
-        super(ID);
+class MiraiConsolePlugin : ModuleType<MiraiPluginModuleBuilder>(ID) {
+    override fun createModuleBuilder(): MiraiPluginModuleBuilder {
+        return MiraiPluginModuleBuilder()
     }
 
-    public static MiraiConsolePlugin getInstance() {
-        return (MiraiConsolePlugin) ModuleTypeManager.getInstance().findByID(ID);
+    override fun getName(): String {
+        return "Mirai Console Plugin"
     }
 
-    @NotNull
-    @Override
-    public MiraiPluginModuleBuilder createModuleBuilder() {
-        return new MiraiPluginModuleBuilder();
+    override fun getDescription(): String {
+        return "Create a mirai console plugin"
     }
 
-    @NotNull
-    @Override
-    public String getName() {
-        return "Mirai Console Plugin";
+    override fun getNodeIcon(b: Boolean): Icon {
+        return PlatformIcons.ABSTRACT_METHOD_ICON
     }
 
-    @NotNull
-    @Override
-    public String getDescription() {
-        return "Create a mirai console plugin";
+    override fun createWizardSteps(wizardContext: WizardContext,
+                                   moduleBuilder: MiraiPluginModuleBuilder,
+                                   modulesProvider: ModulesProvider): Array<ModuleWizardStep> {
+        return super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider)
     }
 
-    @NotNull
-    @Override
-    public Icon getNodeIcon(@Deprecated boolean b) {
-        return PlatformIcons.ABSTRACT_METHOD_ICON;
+    companion object {
+        private const val ID = "MIRAI_CONSOLE_PLUGIN"
+        @JvmStatic
+        val instance: MiraiConsolePlugin
+            get() = ModuleTypeManager.getInstance().findByID(ID) as MiraiConsolePlugin
     }
-
-    @NotNull
-    @Override
-    public ModuleWizardStep[] createWizardSteps(@NotNull WizardContext wizardContext,
-                                                @NotNull MiraiPluginModuleBuilder moduleBuilder,
-                                                @NotNull ModulesProvider modulesProvider) {
-        return super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider);
-    }
-
-
-
 }

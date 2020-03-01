@@ -1,65 +1,63 @@
-package net.mamoe.mirai.intellij.creator;
+package net.mamoe.mirai.intellij.creator
 
-import com.intellij.ide.util.projectWizard.ModuleWizardStep;
-import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.ide.util.projectWizard.ModuleWizardStep
+import com.intellij.openapi.options.ConfigurationException
+import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JPanel
+import javax.swing.JTextField
 
-import javax.swing.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
+    private lateinit var pluginNameField: JTextField
+    private lateinit var pluginVersionField: JTextField
+    private lateinit var mainClassField: JTextField
+    private lateinit var descriptionField: JTextField
+    private lateinit var authorsField: JTextField
+    private lateinit var websiteField: JTextField
+    private lateinit var dependField: JTextField
+    private lateinit var title: JLabel
 
-public class MiraiConsoleModuleWizardStep extends ModuleWizardStep {
+    var panel: JPanel? = null
 
-    private JTextField pluginNameField;
-    private JTextField pluginVersionField;
-    private JTextField mainClassField;
-    private JTextField descriptionField;
-    private JTextField authorsField;
-    private JTextField websiteField;
-    private JTextField dependField;
-    private JLabel title;
-
-    public JPanel panel;
-
-    @Override
-    public JComponent getComponent() {
-        return panel;
+    override fun getComponent(): JComponent {
+        return panel!!
     }
 
-    @Override
-    public void updateDataModel() {
+    override fun updateDataModel() {}
 
+    @Throws(ConfigurationException::class)
+    override fun validate(): Boolean {
+        if (pluginNameField.text.isBlank()) {
+            throw ConfigurationException("请填写插件名称", "新建项目失败")
+        }
+        if (pluginVersionField.text.isBlank()) {
+            throw ConfigurationException("没有填写插件版本", "新建项目失败")
+        }
+        if (mainClassField.text.isBlank()) {
+            throw ConfigurationException("没有填写主类", "新建项目失败")
+        }
+        if (authorsField.text.isBlank()) {
+            throw ConfigurationException("没有填写开发者姓名", "新建项目失败")
+        }
+        return true
     }
 
-    public boolean validate() throws ConfigurationException {
-        if(pluginNameField.getText().isBlank()){
-            throw new ConfigurationException("没有填写插件名称","新建项目失败");
-        }
-        if(pluginVersionField.getText().isBlank()){
-            throw new ConfigurationException("没有填写插件版本","新建项目失败");
-        }
-        if(mainClassField.getText().isBlank()){
-            throw new ConfigurationException("没有填写主类","新建项目失败");
-        }
-        if(authorsField.getText().isBlank()){
-            throw new ConfigurationException("没有填写开发者姓名","新建项目失败");
-        }
-        return true;
+    override fun _init() {
+        super._init()
     }
 
-    @Override
-    public void onStepLeaving() {
-        CreateConfig.author = authorsField.getText();
-        CreateConfig.depends = Stream.of(dependField.getText().replace("，", ",").split(",")).map(String::trim).collect(Collectors.toList());
-        CreateConfig.info = descriptionField.getText();
-        if(!websiteField.getText().isBlank()){
-            CreateConfig.info+=" Web: " + websiteField.getText();
+    override fun onStepLeaving() {
+        CreateConfig.author = authorsField!!.text
+        CreateConfig.depends = dependField!!.text.replace("，", ",").split(",").map(String::trim)
+        CreateConfig.info = descriptionField!!.text
+        if (!websiteField!!.text.isBlank()) {
+            CreateConfig.info += " Web: " + websiteField.text
         }
-        CreateConfig.mainClassPath = mainClassField.getText();
-        CreateConfig.version = pluginVersionField.getText();
-        if(!CreateConfig.version.toLowerCase().startsWith("v")){
-            CreateConfig.version = "V" + CreateConfig.version;
+        CreateConfig.mainClassPath = mainClassField!!.text
+        CreateConfig.version = pluginVersionField!!.text
+        if (!CreateConfig.version!!.toLowerCase().startsWith("v")) {
+            CreateConfig.version = "V" + CreateConfig.version
         }
-        CreateConfig.pluginName = pluginNameField.getText();
+        CreateConfig.pluginName = pluginNameField!!.text
     }
 }
-

@@ -1,12 +1,16 @@
-package net.mamoe.mirai.intellij.creator;
+package net.mamoe.mirai.intellij.creator
 
-import java.util.List;
-
-public class CreateConfig {
-    static String mainClassPath;
-    static String pluginName;
-    static String author;
-    static String info;
-    static List<String> depends;
-    static String version;
+object CreateConfig {
+    @JvmField
+    var mainClassPath: String? = null
+    @JvmField
+    var pluginName: String? = null
+    @JvmField
+    var author: String? = null
+    @JvmField
+    var info: String? = null
+    @JvmField
+    var depends: List<String>? = null
+    @JvmField
+    var version: String? = null
 }
