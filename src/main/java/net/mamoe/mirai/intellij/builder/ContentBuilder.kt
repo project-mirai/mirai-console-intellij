@@ -158,7 +158,7 @@ object Template {
                 }
             }
         }
-    """.trimIndent().let { it.replace("\\\$\\\{", "\${") } // bug also
+    """.trimIndent().let { it.replace("\\\$\\{", "\${") } // bug also
 
     @Language("java")
     val pluginBaseJava: String = """
