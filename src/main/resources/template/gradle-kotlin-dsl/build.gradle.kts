@@ -7,7 +7,7 @@ group = "<GROUP>"
 version = "<VERSION>"
 
 repositories {
-    maven { setUrl("https://mirrors.huaweicloud.com/repository/maven") } // 华为镜像源
+    maven { setUrl("https://mirrors.huaweicloud.com/repository/maven") }
     jcenter()
 }
 
