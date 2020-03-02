@@ -1,15 +1,17 @@
 package net.mamoe.mirai.intellij.module
 
-import com.intellij.ide.util.projectWizard.ModuleWizardStep
-import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.module.ModuleTypeManager
-import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 import com.intellij.util.PlatformIcons
+import net.mamoe.mirai.intellij.CreateConfig
 import net.mamoe.mirai.intellij.builder.MiraiPluginModuleBuilder
 import javax.swing.Icon
 
 class MiraiConsolePluginModule : ModuleType<MiraiPluginModuleBuilder>(ID) {
+    init {
+        CreateConfig // start core version getter
+    }
+
     override fun createModuleBuilder(): MiraiPluginModuleBuilder {
         return MiraiPluginModuleBuilder()
     }
@@ -17,12 +19,6 @@ class MiraiConsolePluginModule : ModuleType<MiraiPluginModuleBuilder>(ID) {
     override fun getName(): String = "Mirai Console Plugin"
     override fun getDescription(): String = "Create a mirai console plugin"
     override fun getNodeIcon(b: Boolean): Icon = PlatformIcons.ABSTRACT_METHOD_ICON
-
-    override fun createWizardSteps(wizardContext: WizardContext,
-                                   moduleBuilder: MiraiPluginModuleBuilder,
-                                   modulesProvider: ModulesProvider): Array<ModuleWizardStep> {
-        return super.createWizardSteps(wizardContext, moduleBuilder, modulesProvider)
-    }
 
     companion object {
         private const val ID = "MIRAI_CONSOLE_PLUGIN"

@@ -1,9 +1,6 @@
 package net.mamoe.mirai.intellij
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.jsoup.Jsoup
 
 object CreateConfig {
@@ -40,11 +37,27 @@ object CreateConfig {
         }
     }
 
-    val consoleVersion = GlobalScope.async {
-        getNewestConsoleVersion()
+    val consoleVersion: Deferred<String> = GlobalScope.async {
+        repeat(3) {
+            try {
+                return@async getNewestConsoleVersion()
+            } catch (e: Exception) {
+            }
+        }
+
+        @Suppress("UNREACHABLE_CODE")
+        "UNKNOWN" // 类型推断 bug
     }
-    val coreVersion = GlobalScope.async {
-        getNewestCoreVersion()
+    val coreVersion: Deferred<String> = GlobalScope.async {
+        repeat(3) {
+            try {
+                return@async getNewestCoreVersion()
+            } catch (e: Exception) {
+            }
+        }
+
+        @Suppress("UNREACHABLE_CODE")
+        "UNKNOWN" // 类型推断 bug
     }
 }
 
