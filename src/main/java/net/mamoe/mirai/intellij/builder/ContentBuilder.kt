@@ -4,7 +4,13 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.testFramework.writeChild
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.runBlocking
 import net.mamoe.mirai.intellij.CreateConfig
+import net.mamoe.mirai.intellij.CreateConfig.consoleVersion
+import net.mamoe.mirai.intellij.CreateConfig.coreVersion
+import org.intellij.lang.annotations.Language
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -24,21 +30,132 @@ fun MiraiPluginModuleBuilder.createRoot(): VirtualFile? {
 }
 
 fun MiraiPluginModuleBuilder.createDic(
-    root:VirtualFile
-){
-    val sourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/java")
+    root: VirtualFile
+) {
+    val sourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/kotlin")
     val resourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/resources")
-    val testSourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/java")
+    val testSourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/kotlin")
     val testResourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/resources")
 
 
-    var fileName = ""
-    val path = CreateConfig.mainClassPath!!.split("/").toMutableList().also {
-        it.removeAt(it.size - 1)
-    }.joinToString("/")
+
 
     root.findOrCreateChildData(this, "build.gradle")
     root.findOrCreateChildData(this, "gradle.properties")
-    val sourcePackageDirectory =  VfsUtil.createDirectories(root.path + "/src/main/java/" + path)
 
+
+    val buildToolFiles: List<String> = when (CreateConfig.buildTool) {
+        CreateConfig.BUILD_GRADLE_KOTLIN -> Template.gradleCommon + Template.gradleKotlinDsl
+        CreateConfig.BUILD_GRADLE_GROOVY -> Template.gradleCommon + Template.gradleGroovyDsl
+        CreateConfig.BUILD_MAVEN -> Template.mavenJava
+        else -> error("not exhaustive when")
+    }
+
+    fun getResource(relativePath: String): String {
+        return this::class.java.classLoader.getResourceAsStream(relativePath)?.readBytes()?.let { String(it) }
+            ?: error("cannot find resource : $relativePath")
+    }
+
+    runBlocking { joinAll(consoleVersion, coreVersion) }
+
+    @Suppress("EXPERIMENTAL_API_USAGE")
+    fun String.replaceTemplateVariables(): String {
+        return this.replace("<GROUP>", "org.example")
+            .replace("<PROJECT_NAME>", CreateConfig.pluginName)
+            .replace("<VERSION>", CreateConfig.version)
+            .replace("<MIRAI_CONSOLE_VERSION>", consoleVersion.getCompleted())
+            .replace("<MIRAI_CORE_VERSION>", coreVersion.getCompleted())
+    }
+
+    buildToolFiles.forEach {
+        root.writeChild(it, getResource(it).replaceTemplateVariables())
+    }
+
+    val pluginBaseClassName: String = CreateConfig.mainClassQualifiedName.substringAfterLast('.')
+
+    val packageName: String = CreateConfig.mainClassQualifiedName.substringBeforeLast('.')
+
+    when (CreateConfig.language) {
+        CreateConfig.LANGUAGE_KOTLIN -> {
+            sourceDirectory.writeChild(
+                CreateConfig.mainClassQualifiedName.replace('.', '/') + ".kt",
+                Template.pluginBaseKotlin.replace(
+                    "MAIN_CLASS_NAME",
+                    pluginBaseClassName
+                ).replace("PACKAGE", packageName)
+            )
+        }
+        CreateConfig.LANGUAGE_JAVA -> {
+            sourceDirectory.writeChild(
+                CreateConfig.mainClassQualifiedName.replace('.', '/') + ".java",
+                Template.pluginBaseJava.replace(
+                    "MAIN_CLASS_NAME",
+                    pluginBaseClassName
+                ).replace("PACKAGE", packageName)
+            )
+        }
+    }
+}
+
+
+object Template {
+    val gradleCommon: List<String> = listOf(
+        "template/gradle-common/gradle/wrapper/gradle-wrapper.jar",
+        "template/gradle-common/gradle/wrapper/gradle-wrapper.properties",
+        "template/gradle-common/gradlew",
+        "template/gradle-common/gradlew.bat"
+    )
+
+    val gradleKotlinDsl: List<String> = listOf(
+        "template/gradle-kotlin-dsl/build.gradle.kts",
+        "template/gradle-kotlin-dsl/settings.gradle.kts",
+        "template/gradle-kotlin-dsl/gradle.properties"
+    )
+
+    val gradleGroovyDsl: List<String> = listOf(
+        "template/gradle-groovy-dsl/build.gradle",
+        "template/gradle-groovy-dsl/settings.gradle",
+        "template/gradle-groovy-dsl/gradle.properties"
+    )
+
+    val mavenJava: List<String> = listOf(
+        "template/maven-kotlin/pom.xml"
+    )
+
+
+    @Language("kotlin")
+    val pluginBaseKotlin: String = """
+        package PACKAGE
+        
+        import net.mamoe.mirai.console.plugins.PluginBase
+        import net.mamoe.mirai.event.events.MessageRecallEvent
+        import net.mamoe.mirai.event.subscribeAlways
+        import net.mamoe.mirai.event.subscribeMessages
+        import net.mamoe.mirai.utils.info
+
+        object MAIN_CLASS_NAME : PluginBase() {
+            override fun onLoad() {
+                super.onLoad()
+            }
+
+            override fun onEnable() {
+                super.onEnable()
+
+                logger.info { "Plugin loaded!" }
+
+                subscribeMessages {
+                    "greeting" reply { "Hello         \$\{sender.nick\}        " }
+                }
+
+                subscribeAlways<MessageRecallEvent> { event ->
+                    logger.info { "        \$\{event.authorId\}         的消息被撤回了" }
+                }
+            }
+        }
+    """.trimIndent()
+
+    @Language("java")
+    val pluginBaseJava: String = """
+        
+    """.trimIndent()
 }
