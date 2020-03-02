@@ -24,27 +24,27 @@ object CreateConfig {
     lateinit var language: String
     lateinit var buildTool: String
 
-    suspend fun getNewestCoreVersion(): String {
+    private suspend fun getNewestCoreVersion(): String {
         return withContext(Dispatchers.IO) {
-            Jsoup.connect("https://bintray.com/package/generalTab?pkgPath=/him188moe/mirai/mirai-core").post().body().getElementById(
+            Jsoup.connect("https://bintray.com/package/generalTab?pkgPath=/him188moe/mirai/mirai-core").get().body().getElementById(
                 "versions"
             ).getElementsByClass("tr")[0].getElementsByClass("td")[0].getElementsByTag("a")[0].text()
         }
     }
 
-    suspend fun getNewestConsoleVersion(): String {
+    private suspend fun getNewestConsoleVersion(): String {
         return withContext(Dispatchers.IO) {
-            Jsoup.connect("https://bintray.com/package/generalTab?pkgPath=/him188moe/mirai/mirai-console").post().body().getElementById(
+            Jsoup.connect("https://bintray.com/package/generalTab?pkgPath=/him188moe/mirai/mirai-console").get().body().getElementById(
                 "versions"
             ).getElementsByClass("tr")[0].getElementsByClass("td")[0].getElementsByTag("a")[0].text()
         }
     }
 
     val consoleVersion = GlobalScope.async {
-        CreateConfig.getNewestConsoleVersion()
+        getNewestConsoleVersion()
     }
     val coreVersion = GlobalScope.async {
-        CreateConfig.getNewestCoreVersion()
+        getNewestCoreVersion()
     }
 }
 
