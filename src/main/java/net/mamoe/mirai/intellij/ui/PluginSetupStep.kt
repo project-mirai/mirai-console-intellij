@@ -79,9 +79,6 @@ class PluginSetupStep : ModuleWizardStep() {
                 manageField.removeItem(CreateConfig.MANAGE_GRADLE_KOTLIN)
             }
         }
-        runBlocking {
-            println(Jsoup.connect("https://bintray.com/package/generalTab?pkgPath=/him188moe/mirai/mirai-core").post().body().getElementById("versions").getElementsByClass("tr")[0].getElementsByClass("td")[0].getElementsByTag("a")[0].text())
-        }
     }
 
     override fun onStepLeaving() {
