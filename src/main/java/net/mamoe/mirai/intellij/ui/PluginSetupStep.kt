@@ -2,10 +2,12 @@ package net.mamoe.mirai.intellij.ui
 
 import com.intellij.ide.util.projectWizard.ModuleWizardStep
 import com.intellij.openapi.options.ConfigurationException
+import kotlinx.coroutines.runBlocking
 import net.mamoe.mirai.intellij.CreateConfig
+import org.jsoup.Jsoup
 import javax.swing.*
 
-class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
+class PluginSetupStep : ModuleWizardStep() {
     private lateinit var pluginNameField: JTextField
     private lateinit var pluginVersionField: JTextField
     private lateinit var mainClassField: JTextField
@@ -13,7 +15,13 @@ class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
     private lateinit var authorsField: JTextField
     private lateinit var websiteField: JTextField
     private lateinit var dependField: JTextField
+    private lateinit var manageField: JComboBox<String>
+    private lateinit var languageField: JComboBox<String>
     private lateinit var title: JLabel
+
+
+
+
 
     var panel: JPanel? = null
 
@@ -54,6 +62,27 @@ class MiraiConsoleModuleWizardStep : ModuleWizardStep() {
         return true
     }
 
+    override fun updateStep() {
+
+        languageField.addItem(CreateConfig.LANGUAGE_JAVA)
+        languageField.addItem(CreateConfig.LANGUAGE_KOTLIN)
+
+        manageField.addItem(CreateConfig.MANAGE_MAVEN)
+        manageField.addItem(CreateConfig.MANAGE_GRADLE_GROOVY)
+
+        languageField.addActionListener{
+            if(languageField.selectedItem == CreateConfig.LANGUAGE_KOTLIN){
+                manageField.addItem(CreateConfig.MANAGE_GRADLE_KOTLIN)
+                manageField.removeItem(CreateConfig.MANAGE_MAVEN)
+            }else{
+                manageField.addItem(CreateConfig.MANAGE_MAVEN)
+                manageField.removeItem(CreateConfig.MANAGE_GRADLE_KOTLIN)
+            }
+        }
+        runBlocking {
+            println(Jsoup.connect("https://bintray.com/package/generalTab?pkgPath=/him188moe/mirai/mirai-core").post().body().getElementById("versions").getElementsByClass("tr")[0].getElementsByClass("td")[0].getElementsByTag("a")[0].text())
+        }
+    }
 
     override fun onStepLeaving() {
 
