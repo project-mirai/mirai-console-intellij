@@ -33,6 +33,9 @@ fun MiraiPluginModuleBuilder.createDic(
     root: VirtualFile
 ) {
     val sourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/kotlin")
+    VfsUtil.createDirectories(root.path + "/src/main/resources")
+    VfsUtil.createDirectories(root.path + "/src/test/kotlin")
+    VfsUtil.createDirectories(root.path + "/src/test/resources")
     //val resourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/resources")
     //val testSourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/kotlin")
     //val testResourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/resources")
@@ -88,6 +91,15 @@ fun MiraiPluginModuleBuilder.createDic(
             )
         }
     }
+
+    root.writeChild("src/main/resources/plugin.yml", Template.pluginYml
+        .replace("NAME", CreateConfig.pluginName)
+        .replace("VERSION", CreateConfig.version)
+        .replace("AUTHOR", CreateConfig.author)
+        .replace("MAIN", CreateConfig.mainClassQualifiedName)
+        .replace("INFO", CreateConfig.info)
+        .replace("DEPENDS", CreateConfig.depends.takeIf { it.isNotEmpty() }?.joinToString { "\n  -$it" } ?: "[]")
+    )
 }
 
 
@@ -116,6 +128,7 @@ object Template {
     )
 
 
+    @Suppress("SimpleRedundantLet") // bug
     @Language("kotlin")
     val pluginBaseKotlin: String = """
         package PACKAGE
@@ -137,18 +150,29 @@ object Template {
                 logger.info { "Plugin loaded!" }
 
                 subscribeMessages {
-                    "greeting" reply { "Hello \$\{sender.nick\}" }
+                    "greeting" reply { "Hello \$\{sender.nick}" }
                 }
 
                 subscribeAlways<MessageRecallEvent> { event ->
-                    logger.info { "\$\{event.authorId\} 的消息被撤回了" }
+                    logger.info { "\$\{event.authorId} 的消息被撤回了" }
                 }
             }
         }
-    """.trimIndent()
+    """.trimIndent().let { it.replace("\\\$\\\{", "\${") } // bug also
 
     @Language("java")
     val pluginBaseJava: String = """
         
+    """.trimIndent()
+
+
+    @Language("yaml")
+    val pluginYml: String = """
+        name: "NAME"
+        author: "AUTHOR"
+        version: "VERSION"
+        main: "MAIN"
+        info: "INFO"
+        depends: DEPENDS
     """.trimIndent()
 }
