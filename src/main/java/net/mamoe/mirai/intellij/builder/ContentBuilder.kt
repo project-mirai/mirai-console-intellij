@@ -33,16 +33,9 @@ fun MiraiPluginModuleBuilder.createDic(
     root: VirtualFile
 ) {
     val sourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/kotlin")
-    val resourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/resources")
-    val testSourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/kotlin")
-    val testResourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/resources")
-
-
-
-
-    root.findOrCreateChildData(this, "build.gradle")
-    root.findOrCreateChildData(this, "gradle.properties")
-
+    //val resourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/resources")
+    //val testSourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/kotlin")
+    //val testResourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/resources")
 
     val buildToolFiles: List<String> = when (CreateConfig.buildTool) {
         CreateConfig.BUILD_GRADLE_KOTLIN -> Template.gradleCommon + Template.gradleKotlinDsl
@@ -68,7 +61,7 @@ fun MiraiPluginModuleBuilder.createDic(
     }
 
     buildToolFiles.forEach {
-        root.writeChild(it, getResource(it).replaceTemplateVariables())
+        root.writeChild(it.substringAfter('/').substringAfter('/'), getResource(it).replaceTemplateVariables())
     }
 
     val pluginBaseClassName: String = CreateConfig.mainClassQualifiedName.substringAfterLast('.')
@@ -144,11 +137,11 @@ object Template {
                 logger.info { "Plugin loaded!" }
 
                 subscribeMessages {
-                    "greeting" reply { "Hello         \$\{sender.nick\}        " }
+                    "greeting" reply { "Hello \$\{sender.nick\}" }
                 }
 
                 subscribeAlways<MessageRecallEvent> { event ->
-                    logger.info { "        \$\{event.authorId\}         的消息被撤回了" }
+                    logger.info { "\$\{event.authorId\} 的消息被撤回了" }
                 }
             }
         }
