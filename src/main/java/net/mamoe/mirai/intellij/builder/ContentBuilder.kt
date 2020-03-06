@@ -52,15 +52,15 @@ fun MiraiPluginModuleBuilder.createDic(
             ?: error("cannot find resource : $relativePath")
     }
 
-    runBlocking { joinAll(consoleVersion, coreVersion) }
+    runBlocking { joinAll(consoleVersion(), coreVersion()) }
 
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun String.replaceTemplateVariables(): String {
         return this.replace("<GROUP>", "org.example")
             .replace("<PROJECT_NAME>", CreateConfig.pluginName)
             .replace("<VERSION>", CreateConfig.version)
-            .replace("<MIRAI_CONSOLE_VERSION>", consoleVersion.getCompleted())
-            .replace("<MIRAI_CORE_VERSION>", coreVersion.getCompleted())
+            .replace("<MIRAI_CONSOLE_VERSION>", consoleVersion().getCompleted())
+            .replace("<MIRAI_CORE_VERSION>", coreVersion().getCompleted())
     }
 
     buildToolFiles.forEach {
