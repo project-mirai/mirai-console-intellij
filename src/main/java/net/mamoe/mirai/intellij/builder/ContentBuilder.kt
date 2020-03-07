@@ -149,7 +149,7 @@ object Template {
             override fun onEnable() {
                 super.onEnable()
 
-                logger.info { "Plugin loaded!" }
+                logger.info("Plugin loaded!")
 
                 subscribeMessages {
                     "greeting" reply { "Hello \$\{sender.nick}" }
@@ -164,7 +164,22 @@ object Template {
 
     @Language("java")
     val pluginBaseJava: String = """
-        
+        package PACKAGE;
+
+        import net.mamoe.mirai.console.plugins.PluginBase;
+
+        class ExamplePluginMain extends PluginBase {
+            
+            public void onLoad(){
+                //start your code here
+                //欢迎使用Kotlin
+            }
+            
+            public void onEnable(){
+                logger.info("Plugin loaded!");
+            }
+            
+        }        
     """.trimIndent()
 
 
