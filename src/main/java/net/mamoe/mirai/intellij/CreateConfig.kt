@@ -21,6 +21,9 @@ object CreateConfig {
     lateinit var language: String
     lateinit var buildTool: String
 
+    lateinit var groupId: String
+    lateinit var artifactId: String
+
     private suspend fun getNewestCoreVersion(): String {
         return withContext(Dispatchers.IO) {
             Jsoup.connect("https://bintray.com/package/generalTab?pkgPath=/him188moe/mirai/mirai-core").get().body().getElementById(

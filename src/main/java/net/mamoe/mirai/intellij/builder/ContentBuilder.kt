@@ -56,11 +56,13 @@ fun MiraiPluginModuleBuilder.createDic(
 
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun String.replaceTemplateVariables(): String {
-        return this.replace("<GROUP>", "org.example")
-            .replace("<PROJECT_NAME>", CreateConfig.pluginName)
-            .replace("<VERSION>", CreateConfig.version)
-            .replace("<MIRAI_CONSOLE_VERSION>", consoleVersion().getCompleted())
-            .replace("<MIRAI_CORE_VERSION>", coreVersion().getCompleted())
+        return runBlocking {
+           this@replaceTemplateVariables.replace("<GROUP>", CreateConfig.groupId)
+                .replace("<PROJECT_NAME>", CreateConfig.artifactId)
+                .replace("<VERSION>", CreateConfig.version)
+                .replace("<MIRAI_CONSOLE_VERSION>", consoleVersion().await())
+                .replace("<MIRAI_CORE_VERSION>", coreVersion().await())
+        }//this should not take time since there are version cache!!
     }
 
     buildToolFiles.forEach {

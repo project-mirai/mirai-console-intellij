@@ -20,6 +20,7 @@ class PluginSetupStep : ModuleWizardStep() {
     //private lateinit var languageField: JComboBox<String>
     private lateinit var consoleVersionField: JTextField
     private lateinit var coreVersionField: JTextField
+    private lateinit var languageField: JComboBox<String>
 
     private lateinit var title: JLabel
 
@@ -43,6 +44,7 @@ class PluginSetupStep : ModuleWizardStep() {
             CreateConfig.version = "V" + CreateConfig.version
         }
         CreateConfig.pluginName = pluginNameField.text
+        CreateConfig.language = languageField.selectedItem?.toString()?:"Java"
        // CreateConfig.language = languageField.selectedItem?.toString().orEmpty()
        //CreateConfig.buildTool = buildToolField.selectedItem?.toString().orEmpty()
         println("I received")
