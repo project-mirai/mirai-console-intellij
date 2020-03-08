@@ -5,6 +5,7 @@ import com.intellij.openapi.module.ModuleTypeManager
 import com.intellij.util.PlatformIcons
 import net.mamoe.mirai.intellij.CreateConfig
 import net.mamoe.mirai.intellij.builder.MiraiPluginModuleBuilder
+import net.mamoe.mirai.intellij.icons.MiraiAssets
 import javax.swing.Icon
 
 class MiraiConsolePluginModule : ModuleType<MiraiPluginModuleBuilder>(ID) {
@@ -18,7 +19,7 @@ class MiraiConsolePluginModule : ModuleType<MiraiPluginModuleBuilder>(ID) {
 
     override fun getName(): String = "Mirai Console Plugin"
     override fun getDescription(): String = "Create a mirai console plugin"
-    override fun getNodeIcon(b: Boolean): Icon = PlatformIcons.ABSTRACT_METHOD_ICON
+    override fun getNodeIcon(b: Boolean): Icon = MiraiAssets.ICON
 
     companion object {
         private const val ID = "MIRAI_CONSOLE_PLUGIN"
