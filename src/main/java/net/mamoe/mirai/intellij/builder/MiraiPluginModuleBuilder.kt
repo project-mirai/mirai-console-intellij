@@ -16,10 +16,8 @@ import net.mamoe.mirai.intellij.ui.PluginSetupStep
 class MiraiPluginModuleBuilder : ModuleBuilder() {
     @Throws(ConfigurationException::class)
     override fun setupRootModel(modifiableRootModel: ModifiableRootModel) {
-        val project = modifiableRootModel.project
         val root = createRoot()?:throw ConfigurationException("创建ROOT文件失败","项目创建失败")
         modifiableRootModel.addContentEntry(root)
-
         if (moduleJdk != null) {
             modifiableRootModel.sdk = moduleJdk
         }
