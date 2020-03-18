@@ -18,9 +18,7 @@ intellij {
 }
 
 tasks.withType<org.jetbrains.intellij.tasks.PatchPluginXmlTask>() {
-    setChangeNotes("""
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>""".trimIndent())
+    setChangeNotes("""Initial release of the plugin which supports all versions of mirai console""".trimIndent())
 }
 
 allprojects {
