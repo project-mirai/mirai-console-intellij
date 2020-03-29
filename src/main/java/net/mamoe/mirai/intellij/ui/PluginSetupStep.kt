@@ -6,7 +6,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.intellij.CreateConfig
 import javax.swing.*
-import javax.xml.bind.JAXBElement
 
 class PluginSetupStep : ModuleWizardStep() {
     private lateinit var pluginNameField: JTextField
@@ -16,6 +15,7 @@ class PluginSetupStep : ModuleWizardStep() {
     private lateinit var authorsField: JTextField
     private lateinit var websiteField: JTextField
     private lateinit var dependField: JTextField
+
     //private lateinit var buildToolField: JComboBox<String>
     //private lateinit var languageField: JComboBox<String>
     private lateinit var consoleVersionField: JTextField
@@ -40,19 +40,17 @@ class PluginSetupStep : ModuleWizardStep() {
         }
         CreateConfig.mainClassQualifiedName = mainClassField.text
         CreateConfig.version = pluginVersionField.text
-        if (!CreateConfig.version.toLowerCase().startsWith("v")) {
-            CreateConfig.version = "V" + CreateConfig.version
-        }
+        CreateConfig.version = CreateConfig.version
         CreateConfig.pluginName = pluginNameField.text
-        CreateConfig.language = languageField.selectedItem?.toString()?:"Java"
-       // CreateConfig.language = languageField.selectedItem?.toString().orEmpty()
-       //CreateConfig.buildTool = buildToolField.selectedItem?.toString().orEmpty()
+        CreateConfig.language = languageField.selectedItem?.toString() ?: "Java"
+        // CreateConfig.language = languageField.selectedItem?.toString().orEmpty()
+        //CreateConfig.buildTool = buildToolField.selectedItem?.toString().orEmpty()
         println("I received")
     }
 
     @Throws(ConfigurationException::class)
     override fun validate(): Boolean {
-        if(consoleVersionField.text == "获取中..." || coreVersionField.text == "获取中..."){
+        if (consoleVersionField.text == "获取中..." || coreVersionField.text == "获取中...") {
             throw ConfigurationException("正在获取最新的Core/Console版本", "信息获取中")
         }
         if (pluginNameField.text.isBlank()) {
