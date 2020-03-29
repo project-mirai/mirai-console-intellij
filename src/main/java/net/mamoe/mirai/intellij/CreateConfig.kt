@@ -30,7 +30,7 @@ object CreateConfig {
                 .getElementById(
                     "versions"
                 ).getElementsByClass("tr")[0].getElementsByClass("td")[0].getElementsByTag("a")[0].text()
-        }
+        }.also { cacheCoreVersion = it }
     }
 
     private suspend fun getNewestConsoleVersion(): String {
@@ -39,7 +39,7 @@ object CreateConfig {
                 .getElementById(
                     "versions"
                 ).getElementsByClass("tr")[0].getElementsByClass("td")[0].getElementsByTag("a")[0].text()
-        }
+        }.also { cacheConsoleVersion = it }
     }
 
 
