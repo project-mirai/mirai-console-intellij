@@ -102,7 +102,7 @@ fun MiraiPluginModuleBuilder.createDic(
         .replace("INFO", CreateConfig.info)
         .replace(
             "DEPENDS",
-            CreateConfig.depends.takeIf { it.isNotEmpty() }?.filter { it.isNotBlank() }?.joinToString { "\n  -$it" }
+            CreateConfig.depends.filter { it.isNotBlank() }.takeIf { it.isNotEmpty() }?.joinToString { "\n  -$it" }
                 ?: "[]")
     )
 }
