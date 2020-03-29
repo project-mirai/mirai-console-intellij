@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.4-M1"
     java
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 group = "<GROUP>"
@@ -9,6 +10,7 @@ version = "<VERSION>"
 repositories {
     maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
     maven(url = "https://mirrors.huaweicloud.com/repository/maven")
+    mavenCentral()
     jcenter()
 }
 
