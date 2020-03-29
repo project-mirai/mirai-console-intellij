@@ -55,7 +55,7 @@ object CreateConfig {
     }
 
     fun consoleVersion(): Deferred<String> = GlobalScope.async {
-        if (cacheConsoleVersion != null && nextConsoleVersionCheck < System.currentTimeMillis()) {
+        if (cacheConsoleVersion != null && nextConsoleVersionCheck > System.currentTimeMillis()) {
             return@async cacheConsoleVersion!!
         }
         repeat(3) {
@@ -73,7 +73,7 @@ object CreateConfig {
 
 
     fun coreVersion(): Deferred<String> = GlobalScope.async {
-        if (cacheCoreVersion != null && nextCoreVersionCheck < System.currentTimeMillis()) {
+        if (cacheCoreVersion != null && nextCoreVersionCheck > System.currentTimeMillis()) {
             return@async cacheCoreVersion!!
         }
         repeat(3) {
