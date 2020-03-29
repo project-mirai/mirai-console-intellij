@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.3.61"
+    kotlin("jvm") version "1.4-M1"
     java
 }
 
@@ -7,7 +7,8 @@ group = "<GROUP>"
 version = "<VERSION>"
 
 repositories {
-    maven { setUrl("https://mirrors.huaweicloud.com/repository/maven") }
+    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
+    maven(url = "https://mirrors.huaweicloud.com/repository/maven")
     jcenter()
 }
 
