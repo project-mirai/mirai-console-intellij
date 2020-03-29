@@ -253,8 +253,8 @@
                 </constraints>
                 <properties>
                   <model>
-                    <item value="Java"/>
                     <item value="Kotlin"/>
+                    <item value="Java"/>
                   </model>
                 </properties>
               </component>
