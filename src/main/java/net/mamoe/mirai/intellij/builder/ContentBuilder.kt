@@ -32,13 +32,21 @@ fun MiraiPluginModuleBuilder.createRoot(): VirtualFile? {
 fun MiraiPluginModuleBuilder.createDic(
     root: VirtualFile
 ) {
-    val sourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/kotlin")
+    val sourceDirectory: VirtualFile
+    val testDirectory: VirtualFile
+    when (CreateConfig.language) {
+        CreateConfig.LANGUAGE_KOTLIN -> {
+            sourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/kotlin")
+            testDirectory = VfsUtil.createDirectories(root.path + "/src/test/kotlin")
+        }
+        CreateConfig.LANGUAGE_JAVA -> {
+            sourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/java")
+            testDirectory = VfsUtil.createDirectories(root.path + "/src/test/java")
+        }
+        else -> error("internal error: illegal language: ${CreateConfig.language}")
+    }
     VfsUtil.createDirectories(root.path + "/src/main/resources")
-    VfsUtil.createDirectories(root.path + "/src/test/kotlin")
     VfsUtil.createDirectories(root.path + "/src/test/resources")
-    //val resourceDirectory = VfsUtil.createDirectories(root.path + "/src/main/resources")
-    //val testSourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/kotlin")
-    //val testResourceDirectory = VfsUtil.createDirectories(root.path + "/src/test/resources")
 
     val buildToolFiles: List<String> = when (CreateConfig.buildTool) {
         CreateConfig.BUILD_GRADLE_KOTLIN -> Template.gradleCommon + Template.gradleKotlinDsl
@@ -82,6 +90,10 @@ fun MiraiPluginModuleBuilder.createDic(
                     pluginBaseClassName
                 ).replace("PACKAGE", packageName)
             )
+            testDirectory.writeChild(
+                "mirai/RunMirai.kt",
+                Template.testConsoleRunnerKotlin
+            )
         }
         CreateConfig.LANGUAGE_JAVA -> {
             sourceDirectory.writeChild(
@@ -90,6 +102,10 @@ fun MiraiPluginModuleBuilder.createDic(
                     "MAIN_CLASS_NAME",
                     pluginBaseClassName
                 ).replace("PACKAGE", packageName)
+            )
+            testDirectory.writeChild(
+                "mirai/RunMirai.java",
+                Template.testConsoleRunnerJava
             )
         }
     }
@@ -164,6 +180,30 @@ object Template {
             }
         }
     """.trimIndent().let { it.replace("\\\$\\{", "\${") } // bug also
+
+
+    @Language("kotlin")
+    val testConsoleRunnerKotlin: String = """
+        package mirai
+
+        import kotlinx.coroutines.runBlocking
+        import net.mamoe.mirai.console.command.CommandManager
+        import net.mamoe.mirai.console.pure.MiraiConsolePureLoader
+
+        object RunMirai {
+
+            // 执行 gradle task: runMiraiConsole 来自动编译, shadow, 复制, 并启动 pure console.
+
+            @JvmStatic
+            fun main(args: Array<String>) {
+                // 默认在 /test 目录下运行
+
+                MiraiConsolePureLoader.load(args[0], args[1]) // 启动 console
+
+                runBlocking { CommandManager.join() } // 阻止主线程退出
+            }
+        }
+    """.trimIndent()
 
     @Language("java")
     val pluginBaseJava: String = """
@@ -242,6 +282,29 @@ object Template {
         }        
     """.trimIndent()
 
+    @Language("java")
+    val testConsoleRunnerJava: String = """
+        package mirai;
+
+        import kotlinx.coroutines.BuildersKt;
+        import kotlinx.coroutines.GlobalScope;
+        import net.mamoe.mirai.console.command.CommandManager;
+        import net.mamoe.mirai.console.pure.MiraiConsolePureLoader;
+
+        public class RunMirai {
+           
+            // 执行 gradle task: runMiraiConsole 来自动编译, shadow, 复制, 并启动 pure console.
+
+            public static void main(String[] args) throws InterruptedException {
+                // 默认在 /test 目录下运行
+
+                MiraiConsolePureLoader.load(args[0], args[1]); // 启动 console
+
+                // 阻止主线程退出
+                BuildersKt.runBlocking(GlobalScope.INSTANCE.getCoroutineContext(), (coroutineScope, continuation) -> CommandManager.INSTANCE.join(continuation));
+            }
+        }
+    """.trimIndent()
 
     @Language("yaml")
     val pluginYml: String = """
