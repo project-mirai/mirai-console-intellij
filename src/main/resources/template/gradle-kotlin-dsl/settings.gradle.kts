@@ -3,6 +3,7 @@ pluginManagement {
         eachPlugin {
             when (requested.id.id) {
                 "com.github.johnrengelman.shadow" -> useModule("com.github.jengelman.gradle.plugins:shadow:${requested.version}")
+                "org.jetbrains.kotlin.jvm" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
             }
         }
     }
