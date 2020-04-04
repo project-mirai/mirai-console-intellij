@@ -1,9 +1,9 @@
 buildscript {
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.31")
+        classpath("org.jsoup:jsoup:1.12.1")
     }
 }
-
 plugins {
     id("org.jetbrains.intellij") version "0.4.16"
     kotlin("jvm") version "1.3.31" // 与 IDEA bundled 的 kotlin 一致
@@ -30,4 +30,9 @@ allprojects {
         maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
         maven { setUrl("https://dl.bintray.com/kotlin/kotlin-dev") }
     }
+}
+
+
+dependencies {
+
 }
