@@ -14,8 +14,8 @@ repositories {
     jcenter()
 }
 
-val miraiCoreVersion = "<MIRAI_CORE_VERSION>"
-val miraiConsoleVersion = "<MIRAI_CONSOLE_VERSION>"
+val miraiCoreVersion = "+" // <MIRAI_CORE_VERSION>
+val miraiConsoleVersion = "+" // <MIRAI_CONSOLE_VERSION>
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))

@@ -214,11 +214,6 @@ object Template {
         class ExamplePluginMain extends PluginBase {
             
             public void onLoad(){
-                bot.getFriends().forEach(friend -> {
-                    System.out.println(friend.getId() + ":" + friend.getNick());
-                    return Unit.INSTANCE; // kotlin 的所有函数都有返回值. Unit 为最基本的返回值. 请在这里永远返回 Unit
-                });
-
                 Events.subscribeAlways(GroupMessage.class, (GroupMessage event) -> {
 
                     if (event.getMessage().contains("reply")) {

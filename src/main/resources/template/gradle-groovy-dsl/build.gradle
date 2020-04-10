@@ -14,10 +14,18 @@ repositories {
     jcenter()
 }
 
+def miraiCoreVersion = "+" // <MIRAI_CORE_VERSION>
+def miraiConsoleVersion = "+" // <MIRAI_CONSOLE_VERSION>
+
 dependencies {
     compileOnly 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    compileOnly 'net.mamoe:mirai-core-jvm:<MIRAI_CORE_VERSION>'
-    compileOnly 'net.mamoe:mirai-console:<MIRAI_CONSOLE_VERSION>'
+    compileOnly "net.mamoe:mirai-core-jvm:$miraiCoreVersion"
+    compileOnly "net.mamoe:mirai-console:$miraiConsoleVersion"
+
+    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    testImplementation "net.mamoe:mirai-core-jvm:$miraiCoreVersion"
+    testImplementation "net.mamoe:mirai-core-qqandroid-jvm:$miraiCoreVersion"
+    testImplementation "net.mamoe:mirai-console:$miraiConsoleVersion"
 }
 
 compileKotlin {
