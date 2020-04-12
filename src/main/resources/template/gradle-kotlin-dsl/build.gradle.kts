@@ -1,3 +1,8 @@
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
+import java.util.*
+
 plugins {
     kotlin("jvm") version "1.3.71"
     java
@@ -65,7 +70,7 @@ tasks {
                     ?.let {
                         println("Coping ${it.name}")
                         it.inputStream()
-                            .transferTo(File("$testConsoleDir/plugins/${it.name}").apply { createNewFile() }
+                            .transferTo1(File("$testConsoleDir/plugins/${it.name}").apply { createNewFile() }
                                 .outputStream())
                         println("Copied ${it.name}")
                     }
@@ -83,4 +88,18 @@ tasks {
             args(miraiCoreVersion, miraiConsoleVersion)
         }
     }
+}
+
+
+@Throws(IOException::class)
+fun InputStream.transferTo1(out: OutputStream): Long {
+    Objects.requireNonNull(out, "out")
+    var transferred: Long = 0
+    val buffer = ByteArray(8192)
+    var read: Int
+    while (this.read(buffer, 0, InputStream.DEFAULT_BUFFER_SIZE).also { read = it } >= 0) {
+        out.write(buffer, 0, read)
+        transferred += read.toLong()
+    }
+    return transferred
 }
