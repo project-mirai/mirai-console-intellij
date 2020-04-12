@@ -97,7 +97,7 @@ fun InputStream.transferTo1(out: OutputStream): Long {
     var transferred: Long = 0
     val buffer = ByteArray(8192)
     var read: Int
-    while (this.read(buffer, 0, InputStream.DEFAULT_BUFFER_SIZE).also { read = it } >= 0) {
+    while (this.read(buffer, 0, 8192).also { read = it } >= 0) {
         out.write(buffer, 0, read)
         transferred += read.toLong()
     }
