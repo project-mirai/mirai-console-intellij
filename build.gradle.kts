@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "net.mamoe"
-version = "1.1.2"
+version = "1.1.3"
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
