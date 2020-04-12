@@ -19,12 +19,12 @@ val miraiConsoleVersion = "+" // <MIRAI_CONSOLE_VERSION>
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
-    compileOnly("net.mamoe:mirai-core-jvm:$miraiCoreVersion")
+    compileOnly("net.mamoe:mirai-core:$miraiCoreVersion")
     compileOnly("net.mamoe:mirai-console:$miraiConsoleVersion")
 
     testImplementation(kotlin("stdlib-jdk8"))
-    testImplementation("net.mamoe:mirai-core-jvm:$miraiCoreVersion")
-    testImplementation("net.mamoe:mirai-core-qqandroid-jvm:$miraiCoreVersion")
+    testImplementation("net.mamoe:mirai-core:$miraiCoreVersion")
+    testImplementation("net.mamoe:mirai-core-qqandroid:$miraiCoreVersion")
     testImplementation("net.mamoe:mirai-console:$miraiConsoleVersion")
 }
 
