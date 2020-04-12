@@ -26,7 +26,7 @@
     <dependencies>
         <dependency>
             <groupId>net.mamoe</groupId>
-            <artifactId>mirai-core-jvm</artifactId>
+            <artifactId>mirai-core</artifactId>
             <version><MIRAI_CORE_VERSION></version>
         </dependency>
         <dependency>
