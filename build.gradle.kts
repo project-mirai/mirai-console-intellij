@@ -1,7 +1,8 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.31")
-        classpath("org.jsoup:jsoup:1.12.1")
     }
 }
 plugins {
@@ -10,7 +11,11 @@ plugins {
 }
 
 group = "net.mamoe"
-version = "1.1.3"
+version = "1.1.4"
+
+dependencies {
+    api("org.jsoup:jsoup:1.12.1")
+}
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
@@ -32,7 +37,15 @@ allprojects {
     }
 }
 
-
-dependencies {
-
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "1.8"
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
