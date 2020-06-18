@@ -229,11 +229,16 @@ class MAIN_CLASS_NAME extends PluginBase {
     public void onEnable() {
         getLogger().info("Plugin enabled!");
 
-        this.getEventListener().subscribeAlways(GroupMessage.class, (GroupMessage event) -> {
+        this.getEventListener().subscribeAlways(GroupMessageEvent.class, (GroupMessageEvent event) -> {
             String content = event.getMessage().contentToString();
             if (content.contains("reply")) {
                 // 引用回复
-                final QuoteReply quote = MessageUtils.quote(event.getMessage());
+                MessageSource gms = event.getMessage().first(MessageSource.Key);
+                if(gms==null) {
+                    getLogger().warning("MessageSource not found in Group MessageChain.");
+                    return;
+                }
+                final QuoteReply quote = new QuoteReply(gms);
                 event.getGroup().sendMessage(quote.plus("引用回复"));
 
             } else if (content.contains("at")) {
