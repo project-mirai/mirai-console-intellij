@@ -233,17 +233,14 @@ class MAIN_CLASS_NAME extends PluginBase {
             String content = event.getMessage().contentToString();
             if (content.contains("reply")) {
                 // 引用回复
-                MessageSource gms = event.getMessage().first(MessageSource.Key);
                 // 对于群消息，MessageChain中第一项应该永远为MessageSource
-                // gms不应为null。此判断是为了防止IDE报Warning 或者未来的某一天API更改
-                if(gms==null) {
-                    getLogger().warning("MessageSource not found in Group MessageChain.");
-                    getLogger().warning("Please check for changes in Mirai API");
-                    return;
-                }
-                final QuoteReply quote = new QuoteReply(gms);
+                // 此处Objects.requireNonNull是为了抑制IDE的Warning,以及防止未来Mirai API变化。
+                final QuoteReply quote = new QuoteReply(Objects.requireNonNull(
+                    event.getMessage().first(MessageSource.Key),
+                    "MessageSource not found in Group MessageChain. Please check Mirai API for updates."
+                ));
                 event.getGroup().sendMessage(quote.plus("引用回复"));
-
+                
             } else if (content.contains("at")) {
                 // at
                 event.getGroup().sendMessage(new At(event.getSender()));
