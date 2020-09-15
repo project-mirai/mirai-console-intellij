@@ -17,6 +17,6 @@ Mirai 是一个在全平台下运行，提供 QQ Android 和 TIM PC 协议支持
 图标以及形象由画师<a href = "">DazeCake</a>绘制
 </div>
 
-# mirai-console-intellij
-IDEA插件, 支持快速生成启动mirai plugins项目<br>
-on going
+# mirai-console-intellij [DEPRECATED]
+
+IntelliJ 插件现在已归入 mirai-console 仓库内: [mirai-console](https://github.com/mamoe/mirai-console), [intellij-plugin](https://github.com/mamoe/mirai-console/tree/master/intellij-plugin)
